@@ -10,7 +10,7 @@ namespace ApiCatalogo.Models
     {
         public Categoria()
         {
-            Produtos = new Collec   tion<Produto>();
+            Produtos = new Collection<Produto>();
         }
 
         public int Id { get; set; }
