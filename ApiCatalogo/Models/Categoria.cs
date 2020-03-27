@@ -18,10 +18,10 @@ namespace ApiCatalogo.Models
         public int Id { get; set; }
 
         [MaxLength(80)]
-        public int Nome { get; set; }
+        public string Nome { get; set; }
                 
         [MaxLength(300)]
-        public int ImagemUrl { get; set; }
+        public string ImagemUrl { get; set; }
 
         // Uma Categoria possui uma coleção de produtos
         // (vários produtos)
