@@ -59,6 +59,33 @@ namespace ApiCatalogo.Controllers
 
             return new CreatedAtRouteResult("ObterProduto", new { id = produto.Id }, produto);
         }
+
+
+        [HttpPut("{id}")]
+        public ActionResult AlterarProduto(int id, [FromBody] Produto produto)
+        {
+            if (id != produto.Id)
+                return BadRequest();
+
+            _ctx.Entry(produto).State = EntityState.Modified;
+            _ctx.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult<Produto> ExcluirProduto(int id)
+        {
+            Produto produto = _ctx.Produtos.Where(p => p.Id == id).FirstOrDefault();
+            if (produto == null)
+                return NotFound();
+
+            _ctx.Produtos.Remove(produto);
+            _ctx.SaveChanges();
+            return produto;
+        }
     }
+
+
 
 }
