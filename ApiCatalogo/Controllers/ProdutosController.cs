@@ -60,7 +60,12 @@ namespace ApiCatalogo.Controllers
             return new CreatedAtRouteResult("ObterProduto", new { id = produto.Id }, produto);
         }
 
-
+        /// <summary>
+        /// Alterar Produto
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="produto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public ActionResult AlterarProduto(int id, [FromBody] Produto produto)
         {
@@ -73,6 +78,11 @@ namespace ApiCatalogo.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Excluir Produto
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public ActionResult<Produto> ExcluirProduto(int id)
         {
@@ -85,7 +95,4 @@ namespace ApiCatalogo.Controllers
             return produto;
         }
     }
-
-
-
 }
