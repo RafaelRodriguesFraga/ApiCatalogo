@@ -25,7 +25,7 @@ namespace ApiCatalogo.Models
 
         // Uma Categoria possui uma coleção de produtos
         // (vários produtos)
-        public ICollection<Produto> Produtos;
+        public ICollection<Produto> Produtos { get; set; }
 
     }
 }
