@@ -66,7 +66,7 @@ namespace ApiCatalogo.Controllers
         /// <param name="id"></param>
         /// <param name="produto"></param>
         /// <returns></returns>
-        [HttpPut("{id}")]
+        [HttpPut("{id:int:min(1)}")]
         public ActionResult AlterarProduto(int id, [FromBody] Produto produto)
         {
             if (id != produto.Id)
