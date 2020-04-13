@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using ApiCatalogo.Context;
+using ApiCatalogo.Extensions;
+using ApiCatalogo.Filters;
 using ApiCatalogo.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,9 +31,13 @@ namespace ApiCatalogo
             services.AddDbContext<AppDbContext>(options =>
                  options.UseMySql(Configuration.GetConnectionString("MySqlConnection")));
 
+            //Configura o Serviço
             services.AddTransient<IMeuServico, MeuServico>();
 
-            //Registrar o gerador do swagger definindo um ou mais documentos Swagger
+            //Configura o Filtro
+            services.AddScoped<ApiLoggingFilter>();
+
+            //Registrar o gerador do swagger definindo um ou mais document os Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Catalogo", Version = "v1" });
@@ -50,6 +56,9 @@ namespace ApiCatalogo
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //Adiciona o Middleware de tratamento de erro
+            app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
 
