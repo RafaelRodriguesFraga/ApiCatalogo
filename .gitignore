@@ -340,3 +340,4 @@ ASALocalRun/
 healthchecksdb
 /ApiCatalogo/appsettings.Development.json
 /ApiCatalogo/appsettings.json
+/ApiCatalogo/ApiCatalogo.xml
