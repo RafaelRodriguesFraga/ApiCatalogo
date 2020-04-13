@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiCatalogo.Context;
+using ApiCatalogo.Filters;
 using ApiCatalogo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +29,7 @@ namespace ApiCatalogo.Controllers
         /// </summary>
         /// <returns>Uma lista de produtos</returns>
         [HttpGet]
+        [ServiceFilter(typeof(ApiLoggingFilter))]
         public ActionResult<IEnumerable<Produto>> ListarProdutos()
         {
             return _ctx.Produtos.AsNoTracking().ToList();
@@ -39,15 +42,14 @@ namespace ApiCatalogo.Controllers
         /// <returns>Produto</returns>
         [HttpGet("{id}", Name = "ObterProduto")]
         public ActionResult<Produto> ListarProdutoPorId(int id)
-        {
+        {        
+
             Produto produto = _ctx.Produtos.Where(p => p.Id == id).AsNoTracking().FirstOrDefault();
             if (produto == null)
                 return NotFound();
 
             return produto;
         }
-
-
        
         /// <summary>
         /// Cadastrar Produto
