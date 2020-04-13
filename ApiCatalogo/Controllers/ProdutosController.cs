@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ApiCatalogo.Context;
 using ApiCatalogo.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -22,14 +23,14 @@ namespace ApiCatalogo.Controllers
         }
 
         /// <summary>
-        /// Listar um Produto
+        /// Listar Produtos
         /// </summary>
         /// <returns>Uma lista de produtos</returns>
         [HttpGet]
         public ActionResult<IEnumerable<Produto>> ListarProdutos()
         {
             return _ctx.Produtos.AsNoTracking().ToList();
-        }
+        }      
 
         /// <summary>
         /// Listar Produto por Id
@@ -46,6 +47,8 @@ namespace ApiCatalogo.Controllers
             return produto;
         }
 
+
+       
         /// <summary>
         /// Cadastrar Produto
         /// </summary>
