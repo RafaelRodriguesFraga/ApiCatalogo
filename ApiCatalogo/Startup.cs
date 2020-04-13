@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using ApiCatalogo.Context;
+using ApiCatalogo.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,8 @@ namespace ApiCatalogo
             services.AddControllers();
             services.AddDbContext<AppDbContext>(options =>
                  options.UseMySql(Configuration.GetConnectionString("MySqlConnection")));
+
+            services.AddTransient<IMeuServico, MeuServico>();
 
             //Registrar o gerador do swagger definindo um ou mais documentos Swagger
             services.AddSwaggerGen(c =>
