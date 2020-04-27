@@ -4,6 +4,7 @@ using System.Reflection;
 using ApiCatalogo.Context;
 using ApiCatalogo.Extensions;
 using ApiCatalogo.Filters;
+using ApiCatalogo.Repository;
 using ApiCatalogo.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,9 @@ namespace ApiCatalogo
 
             //Configura o Filtro
             services.AddScoped<ApiLoggingFilter>();
+
+            //Configura o Unity of Work
+            services.AddScoped<IUnityOfWork, UnityOfWork>();
 
             //Registrar o gerador do swagger definindo um ou mais document os Swagger
             services.AddSwaggerGen(c =>
