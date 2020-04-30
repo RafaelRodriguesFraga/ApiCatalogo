@@ -31,6 +31,16 @@ namespace ApiCatalogo.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Categoria>> ListarCategorias()
         {
+            return _unitOfWork.CategoriaRepository.Get().ToList();
+        }
+
+        /// <summary>
+        /// Listar Produtos de uma Categoria
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("produtos")]
+        public ActionResult<IEnumerable<Categoria>> ListarCategoriasProdutos()
+        {
             return _unitOfWork.CategoriaRepository.GetCategoriasProdutos().ToList();
         }
         
