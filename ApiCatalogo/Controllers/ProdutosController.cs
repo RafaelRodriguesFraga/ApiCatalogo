@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ApiCatalogo.Context;
 using ApiCatalogo.Filters;
 using ApiCatalogo.Models;
+using ApiCatalogo.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,11 +18,11 @@ namespace ApiCatalogo.Controllers
     [ApiController]
     public class ProdutosController : ControllerBase
     {
-        private readonly AppDbContext _ctx;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProdutosController(AppDbContext ctx)
+        public ProdutosController(IUnitOfWork unitOfWork)
         {
-            _ctx = ctx;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -32,19 +33,20 @@ namespace ApiCatalogo.Controllers
         [ServiceFilter(typeof(ApiLoggingFilter))]
         public ActionResult<IEnumerable<Produto>> ListarProdutos()
         {
-            return _ctx.Produtos.AsNoTracking().ToList();
-        }      
-
+            return _unitOfWork.ProdutoRepository.Get().ToList();
+        }   
+       
         /// <summary>
         /// Listar Produto por Id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Produto</returns>
+        /// <returns>Produto</returns>  
         [HttpGet("{id}", Name = "ObterProduto")]
         public ActionResult<Produto> ListarProdutoPorId(int id)
-        {        
+        {
 
-            Produto produto = _ctx.Produtos.Where(p => p.Id == id).AsNoTracking().FirstOrDefault();
+            Produto produto = _unitOfWork.ProdutoRepository.GetById(p => p.Id ==  id);
+
             if (produto == null)
                 return NotFound();
 
@@ -59,8 +61,8 @@ namespace ApiCatalogo.Controllers
         [HttpPost]
         public ActionResult CadastrarProduto([FromBody] Produto produto)
         {
-            _ctx.Produtos.Add(produto);
-            _ctx.SaveChanges();
+            _unitOfWork.ProdutoRepository.Add(produto);
+            _unitOfWork.Commit();
 
             return new CreatedAtRouteResult("ObterProduto", new { id = produto.Id }, produto);
         }
@@ -77,8 +79,8 @@ namespace ApiCatalogo.Controllers
             if (id != produto.Id)
                 return BadRequest();
 
-            _ctx.Entry(produto).State = EntityState.Modified;
-            _ctx.SaveChanges();
+            _unitOfWork.ProdutoRepository.Update(produto);
+            _unitOfWork.Commit();
 
             return Ok();
         }
@@ -91,12 +93,12 @@ namespace ApiCatalogo.Controllers
         [HttpDelete("{id}")]
         public ActionResult<Produto> ExcluirProduto(int id)
         {
-            Produto produto = _ctx.Produtos.Where(p => p.Id == id).FirstOrDefault();
+            Produto produto = _unitOfWork.ProdutoRepository.GetById(p => p.Id == id);
             if (produto == null)
                 return NotFound();
 
-            _ctx.Produtos.Remove(produto);
-            _ctx.SaveChanges();
+            _unitOfWork.ProdutoRepository.Delete(produto);
+            _unitOfWork.Commit();
             return produto;
         }
     }

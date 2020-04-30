@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ApiCatalogo.Context;
 using ApiCatalogo.Models;
+using ApiCatalogo.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,11 +17,11 @@ namespace ApiCatalogo.Controllers
     [ApiController]
     public class CategoriasController : ControllerBase
     {
-        private readonly AppDbContext _ctx;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoriasController(AppDbContext ctx)
+        public CategoriasController(IUnitOfWork unitOfWork)
         {
-            _ctx = ctx;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -30,9 +31,9 @@ namespace ApiCatalogo.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Categoria>> ListarCategorias()
         {
-            return _ctx.Categorias.AsNoTracking().ToList();
+            return _unitOfWork.CategoriaRepository.GetCategoriasProdutos().ToList();
         }
-
+        
         /// <summary>
         /// Listar Categoria por Id
         /// </summary>
@@ -41,7 +42,7 @@ namespace ApiCatalogo.Controllers
         [HttpGet("{id}", Name = "ObterCategoria")]
         public ActionResult<Categoria> ListarCategoriaPorId(int id)
         {
-            Categoria categoria = _ctx.Categorias.Where(p => p.Id == id).AsNoTracking().FirstOrDefault();
+            Categoria categoria = _unitOfWork.CategoriaRepository.GetById(c => c.Id == id);
             if (categoria == null)
                 return NotFound();
 
@@ -56,8 +57,8 @@ namespace ApiCatalogo.Controllers
         [HttpPost]
         public ActionResult CadastrarCategoria([FromBody] Categoria categoria)
         {
-            _ctx.Categorias.Add(categoria);
-            _ctx.SaveChanges();
+            _unitOfWork.CategoriaRepository.Add(categoria);
+            _unitOfWork.Commit();
 
             return new CreatedAtRouteResult("ObterCategoria", new { id = categoria.Id }, categoria);
         }
@@ -74,8 +75,8 @@ namespace ApiCatalogo.Controllers
             if (id != categoria.Id)
                 return BadRequest();
 
-            _ctx.Entry(categoria).State = EntityState.Modified;
-            _ctx.SaveChanges();
+            _unitOfWork.CategoriaRepository.Update(categoria);
+            _unitOfWork.Commit();
 
             return Ok();
         }
@@ -88,12 +89,12 @@ namespace ApiCatalogo.Controllers
         [HttpDelete("{id}")]
         public ActionResult<Categoria> ExcluirCategoria(int id)
         {
-            Categoria categoria = _ctx.Categorias.Where(p => p.Id == id).FirstOrDefault();
+            Categoria categoria = _unitOfWork.CategoriaRepository.GetById(c => c.Id == id);
             if (categoria == null)
                 return NotFound();
 
-            _ctx.Categorias.Remove(categoria);
-            _ctx.SaveChanges();
+            _unitOfWork.CategoriaRepository.Delete(categoria);
+            _unitOfWork.Commit();
             return categoria;
         }
     }
