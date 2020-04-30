@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ApiCatalogo.Repository
 {
-   public interface IUnityOfWork : IDisposable
+   public interface IUnitOfWork : IDisposable
     {
         IProdutoRepository ProdutoRepository { get; }
         ICategoriaRepository CategoriaRepository { get; }

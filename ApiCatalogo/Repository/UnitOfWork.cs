@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ApiCatalogo.Repository
 {
-    public class UnityOfWork : IUnityOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private ProdutoRepository _produtoRepo;
         private CategoriaRepository _categoriaRepo;
         public AppDbContext _context;
 
-        public UnityOfWork(AppDbContext context)
+        public UnitOfWork(AppDbContext context)
         {
             _context = context;
         }

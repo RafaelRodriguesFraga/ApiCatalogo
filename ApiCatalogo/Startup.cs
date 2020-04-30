@@ -38,8 +38,8 @@ namespace ApiCatalogo
             //Configura o Filtro
             services.AddScoped<ApiLoggingFilter>();
 
-            //Configura o Unity of Work
-            services.AddScoped<IUnityOfWork, UnityOfWork>();
+            //Configura o Unit of Work
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             //Registrar o gerador do swagger definindo um ou mais document os Swagger
             services.AddSwaggerGen(c =>
