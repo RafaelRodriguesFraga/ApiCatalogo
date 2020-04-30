@@ -34,8 +34,18 @@ namespace ApiCatalogo.Controllers
         public ActionResult<IEnumerable<Produto>> ListarProdutos()
         {
             return _unitOfWork.ProdutoRepository.Get().ToList();
-        }   
-       
+        }
+
+        /// <summary>
+        /// Lista Produtos por Preço
+        /// </summary>
+        /// <returns>Produtos pelo seu preço</returns>
+        [HttpGet("menorpreco")]
+        public ActionResult<IEnumerable<Produto>> GetProdutosPrecos()
+        {
+            return _unitOfWork.ProdutoRepository.GetProdutosPorPreco().ToList();
+        }
+
         /// <summary>
         /// Listar Produto por Id
         /// </summary>
