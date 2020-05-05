@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using ApiCatalogo.Context;
+using ApiCatalogo.DTO;
 using ApiCatalogo.Models;
 using ApiCatalogo.Repository;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,10 +20,12 @@ namespace ApiCatalogo.Controllers
     public class CategoriasController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CategoriasController(IUnitOfWork unitOfWork)
+        public CategoriasController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -29,9 +33,13 @@ namespace ApiCatalogo.Controllers
         /// </summary>
         /// <returns>Uma lista de Categorias</returns>
         [HttpGet]
-        public ActionResult<IEnumerable<Categoria>> ListarCategorias()
+        public ActionResult<IEnumerable<CategoriaDTO>> ListarCategorias()
         {
-            return _unitOfWork.CategoriaRepository.Get().ToList();
+            List<Categoria> categorias = _unitOfWork.CategoriaRepository.Get().ToList();
+            List<CategoriaDTO> categoriasDto = _mapper.Map<List<CategoriaDTO>>(categorias);
+
+            return categoriasDto;
+
         }
 
         /// <summary>
@@ -39,9 +47,12 @@ namespace ApiCatalogo.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("produtos")]
-        public ActionResult<IEnumerable<Categoria>> ListarCategoriasProdutos()
+        public ActionResult<IEnumerable<CategoriaDTO>> ListarCategoriasProdutos()
         {
-            return _unitOfWork.CategoriaRepository.GetCategoriasProdutos().ToList();
+            List<Categoria> categorias =  _unitOfWork.CategoriaRepository.GetCategoriasProdutos().ToList();
+            List<CategoriaDTO> categoriasDto = _mapper.Map<List<CategoriaDTO>>(categorias);
+
+            return categoriasDto;
         }
         
         /// <summary>
@@ -50,13 +61,15 @@ namespace ApiCatalogo.Controllers
         /// <param name="id"></param>
         /// <returns>Categoria</returns>
         [HttpGet("{id}", Name = "ObterCategoria")]
-        public ActionResult<Categoria> ListarCategoriaPorId(int id)
+        public ActionResult<CategoriaDTO> ListarCategoriaPorId(int id)
         {
             Categoria categoria = _unitOfWork.CategoriaRepository.GetById(c => c.Id == id);
             if (categoria == null)
                 return NotFound();
 
-            return categoria;
+            CategoriaDTO categoriaDto = _mapper.Map<CategoriaDTO>(categoria);
+
+            return categoriaDto;
         }
 
         /// <summary>
@@ -65,12 +78,16 @@ namespace ApiCatalogo.Controllers
         /// <param name="categoria"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult CadastrarCategoria([FromBody] Categoria categoria)
+        public ActionResult CadastrarCategoria([FromBody] CategoriaDTO categoriaDto)
         {
+            Categoria categoria = _mapper.Map<Categoria>(categoriaDto);
             _unitOfWork.CategoriaRepository.Add(categoria);
             _unitOfWork.Commit();
 
-            return new CreatedAtRouteResult("ObterCategoria", new { id = categoria.Id }, categoria);
+
+            CategoriaDTO categoriaDTO = _mapper.Map<CategoriaDTO>(categoria);
+
+            return new CreatedAtRouteResult("ObterCategoria", new { id = categoria.Id }, categoriaDTO);
         }
 
         /// <summary>
@@ -80,10 +97,12 @@ namespace ApiCatalogo.Controllers
         /// <param name="categoria"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public ActionResult AlterarCategoria(int id, [FromBody] Categoria categoria)
+        public ActionResult AlterarCategoria(int id, [FromBody] CategoriaDTO categoriaDto)
         {
-            if (id != categoria.Id)
+            if (id != categoriaDto.Id)
                 return BadRequest();
+
+            Categoria categoria = _mapper.Map<Categoria>(categoriaDto);
 
             _unitOfWork.CategoriaRepository.Update(categoria);
             _unitOfWork.Commit();
@@ -97,7 +116,7 @@ namespace ApiCatalogo.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public ActionResult<Categoria> ExcluirCategoria(int id)
+        public ActionResult<CategoriaDTO> ExcluirCategoria(int id)
         {
             Categoria categoria = _unitOfWork.CategoriaRepository.GetById(c => c.Id == id);
             if (categoria == null)
@@ -105,7 +124,9 @@ namespace ApiCatalogo.Controllers
 
             _unitOfWork.CategoriaRepository.Delete(categoria);
             _unitOfWork.Commit();
-            return categoria;
+
+            CategoriaDTO categoriaDto = _mapper.Map<CategoriaDTO>(categoria);
+            return categoriaDto;
         }
     }
 }
