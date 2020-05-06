@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text;
 using ApiCatalogo.Context;
 using ApiCatalogo.DTO.Mappings;
 using ApiCatalogo.Extensions;
@@ -8,6 +10,7 @@ using ApiCatalogo.Filters;
 using ApiCatalogo.Repository;
 using ApiCatalogo.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -15,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace ApiCatalogo
@@ -27,6 +31,7 @@ namespace ApiCatalogo
         }
 
         public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -69,6 +74,26 @@ namespace ApiCatalogo
 
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+
+            /*
+             Adiciona o manupulador de autenticacao e define o
+             equema de autenticacao usado que é o Bearer.
+             Valida o emissor, a audiencia e a chave usando a 
+             chave secreta valida a assinatura
+             */
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                       options.TokenValidationParameters = new TokenValidationParameters
+                       {
+                           ValidateIssuer = true,
+                           ValidateAudience = true,
+                           ValidateLifetime = true,
+                           ValidAudience = Configuration["TokenSettings:Audience"],
+                           ValidIssuer = Configuration["TokenSettings:Issuer"],
+                           ValidateIssuerSigningKey = true,
+                           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey:Key"]))
+                       } 
+             );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
