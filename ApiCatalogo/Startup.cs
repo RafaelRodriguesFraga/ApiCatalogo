@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text;
 using ApiCatalogo.Context;
 using ApiCatalogo.DTO.Mappings;
@@ -36,6 +35,9 @@ namespace ApiCatalogo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors();
+
             services.AddControllers().AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -114,6 +116,8 @@ namespace ApiCatalogo
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
