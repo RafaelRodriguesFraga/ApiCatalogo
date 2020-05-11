@@ -6,8 +6,9 @@ using ApiCatalogo.DTO;
 using ApiCatalogo.Models;
 using ApiCatalogo.Repository;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 
 
 namespace ApiCatalogo.Controllers
@@ -17,6 +18,7 @@ namespace ApiCatalogo.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class CategoriasController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
