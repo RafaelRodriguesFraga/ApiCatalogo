@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ApiCatalogo</name>
+    </assembly>
+    <members>
+        <member name="M:ApiCatalogo.Controllers.AutorizaController.LogUsuario">
+            <summary>
+            Log de Entrada do Usuario
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.AutorizaController.RegistrarUsuario(ApiCatalogo.DTO.UsuarioDTO)">
+            <summary>
+            Registrar Usuário
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.AutorizaController.Login(ApiCatalogo.DTO.UsuarioDTO)">
+            <summary>
+            Login do Usuário
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApiCatalogo.Controllers.CategoriasController">
+            <summary>
+            Categorias
+            </summary>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.CategoriasController.ListarCategorias">
+            <summary>
+            Listar Categoria
+            </summary>
+            <returns>Uma lista de Categorias</returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.CategoriasController.ListarCategoriasProdutos">
+            <summary>
+            Listar Produtos de uma Categoria
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.CategoriasController.ListarCategoriaPorId(System.Int32)">
+            <summary>
+            Listar Categoria por Id
+            </summary>
+            <param name="id"></param>
+            <returns>Categoria</returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.CategoriasController.CadastrarCategoria(ApiCatalogo.DTO.CategoriaDTO)">
+            <summary>
+            Cadastrar Categoria
+            </summary>
+            <param name="categoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.CategoriasController.AlterarCategoria(System.Int32,ApiCatalogo.DTO.CategoriaDTO)">
+            <summary>
+            Alterar Categoria
+            </summary>
+            <param name="id"></param>
+            <param name="categoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.CategoriasController.ExcluirCategoria(System.Int32)">
+            <summary>
+            Excluir Categoria
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApiCatalogo.Controllers.ProdutosController">
+            <summary>
+            Produtos
+            </summary>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.ProdutosController.ListarProdutos">
+            <summary>
+            Listar Produtos
+            </summary>
+            <returns>Uma lista de produtos</returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.ProdutosController.GetProdutosPrecos">
+            <summary>
+            Lista Produtos por Preço
+            </summary>
+            <returns>Produtos pelo seu preço</returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.ProdutosController.ListarProdutoPorId(System.Int32)">
+            <summary>
+            Listar Produto por Id
+            </summary>
+            <param name="id"></param>
+            <returns>Produto</returns>  
+        </member>
+        <member name="M:ApiCatalogo.Controllers.ProdutosController.CadastrarProduto(ApiCatalogo.DTO.ProdutoDTO)">
+            <summary>
+            Cadastrar Produto
+            </summary>
+            <param name="produto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.ProdutosController.AlterarProduto(System.Int32,ApiCatalogo.DTO.ProdutoDTO)">
+            <summary>
+            Alterar Produto
+            </summary>
+            <param name="id"></param>
+            <param name="produto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiCatalogo.Controllers.ProdutosController.ExcluirProduto(System.Int32)">
+            <summary>
+            Excluir Produto
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
