@@ -40,6 +40,7 @@ namespace ApiCatalogo.Repository
             return _context.Set<T>().SingleOrDefault(predicate);
         }
 
+      
         public void Update(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
