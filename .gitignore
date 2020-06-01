@@ -342,3 +342,4 @@ healthchecksdb
 /ApiCatalogo/appsettings.json
 /ApiCatalogo/ApiCatalogo.xml
 /.editorconfig
+/ApiCatalogo/.config/dotnet-tools.json
