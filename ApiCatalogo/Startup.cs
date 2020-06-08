@@ -42,7 +42,7 @@ namespace ApiCatalogo
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDbContext<AppDbContext>(options =>
-                 options.UseMySql(Configuration.GetConnectionString("MySqlConnection")));
+                 options.UseMySql(Configuration.GetConnectionString("MySqlHerokuConnection")));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
