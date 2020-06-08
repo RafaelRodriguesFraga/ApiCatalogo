@@ -14,8 +14,7 @@ namespace ApiCatalogo.Controllers
     /// Produtos
     /// </summary>
     [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
+    [ApiController]    
     public class ProdutosController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
