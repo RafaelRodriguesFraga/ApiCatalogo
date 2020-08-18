@@ -13,8 +13,7 @@ namespace ApiCatalogo.Models
         {
             Produtos = new Collection<Produto>();
         }
-
-        [Key]
+        
         public int Id { get; set; }
 
         [MaxLength(80)]

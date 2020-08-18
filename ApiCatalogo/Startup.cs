@@ -42,7 +42,7 @@ namespace ApiCatalogo
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDbContext<AppDbContext>(options =>
-                 options.UseMySql(Configuration.GetConnectionString("MySqlHerokuConnection")));
+                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
@@ -63,10 +63,7 @@ namespace ApiCatalogo
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Catalogo", Version = "v1" });
 
-                // Caminho para o Swagger JSON e UI
-                string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                
             });
 
             var mappingConfig = new MapperConfiguration(mc =>

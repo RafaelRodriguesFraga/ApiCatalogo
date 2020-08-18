@@ -8,11 +8,8 @@ using System.Threading.Tasks;
 namespace ApiCatalogo.Models
 {
     public class Produto
-    {
-        [Key]
-        public int Id { get; set; }
-
-        
+    {        
+        public int Id { get; set; }        
         [MaxLength(80)]
         public string Nome { get; set; }
        

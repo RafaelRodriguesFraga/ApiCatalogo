@@ -1,39 +1,13 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ApiCatalogo.Migrations
 {
-    public partial class Identity : Migration
+    public partial class inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<decimal>(
-                name: "Preco",
-                table: "Produtos",
-                type: "decimal(8,2)",
-                nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "decimal(65,30)");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Nome",
-                table: "Categorias",
-                maxLength: 80,
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldMaxLength: 80);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "ImagemUrl",
-                table: "Categorias",
-                maxLength: 300,
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldMaxLength: 300);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -74,11 +48,25 @@ namespace ApiCatalogo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categorias",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Nome = table.Column<string>(maxLength: 80, nullable: true),
+                    ImagemUrl = table.Column<string>(maxLength: 300, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categorias", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -99,7 +87,7 @@ namespace ApiCatalogo.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -179,6 +167,31 @@ namespace ApiCatalogo.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Produtos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Nome = table.Column<string>(maxLength: 80, nullable: true),
+                    Descricao = table.Column<string>(maxLength: 300, nullable: true),
+                    Preco = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
+                    ImagemUrl = table.Column<string>(maxLength: 500, nullable: true),
+                    Estoque = table.Column<float>(nullable: true),
+                    DataCadastro = table.Column<DateTime>(nullable: true),
+                    CategoriaId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Produtos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Produtos_Categorias_CategoriaId",
+                        column: x => x.CategoriaId,
+                        principalTable: "Categorias",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -215,6 +228,11 @@ namespace ApiCatalogo.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Produtos_CategoriaId",
+                table: "Produtos",
+                column: "CategoriaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -235,38 +253,16 @@ namespace ApiCatalogo.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Produtos");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.AlterColumn<decimal>(
-                name: "Preco",
-                table: "Produtos",
-                type: "decimal(65,30)",
-                nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "decimal(8,2)");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Nome",
-                table: "Categorias",
-                type: "int",
-                maxLength: 80,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldMaxLength: 80,
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<int>(
-                name: "ImagemUrl",
-                table: "Categorias",
-                type: "int",
-                maxLength: 300,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldMaxLength: 300,
-                oldNullable: true);
+            migrationBuilder.DropTable(
+                name: "Categorias");
         }
     }
 }
